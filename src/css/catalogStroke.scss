@@ -1,0 +1,29 @@
+
+    .book__section__stroke {
+      flex-basis: calc(100% - 20px);
+      display: flex;
+      flex-wrap: nowrap;
+      margin-bottom: 30px;
+
+      .cover__mini {
+        width: 70px;
+        margin-right: 10px;
+      }
+
+      .book__info {
+        display: flex;
+        width: 100%;
+
+        :nth-child(all) {
+         margin-right: 10px;
+        }
+      }
+
+      [src$="_audio.png"] {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+
+

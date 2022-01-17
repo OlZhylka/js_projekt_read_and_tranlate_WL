@@ -1,0 +1,21 @@
+.content {
+  flex-basis: calc(80% - 30px);
+  padding-left: 30px;
+
+
+  .catalog__section {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+
+
+  }
+}
+
+
+
+
+

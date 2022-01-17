@@ -1,0 +1,26 @@
+button {
+  font-size: 14px;
+  border-radius: 20rem;
+  border: #2be262 1px solid;
+  background-color: #2be262;
+  box-shadow: inset 0px 0px 10px 0px #076423;
+  color: #021705;
+
+}
+
+.button{
+  &__enter{
+    width: 90px;
+    height: 60px;
+    margin-left: 10px;
+  }
+
+  &__find {
+    width: 80px;
+    height: 60px;
+    display: block;
+    margin: 10px auto;
+
+
+  }
+}

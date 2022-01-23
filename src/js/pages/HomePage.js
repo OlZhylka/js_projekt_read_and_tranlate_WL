@@ -8,10 +8,11 @@ const HomePage = {
                 let bookSection = document.createElement('div');
                 let bookContent = document.createElement('div');
                 bookSection.classList.add('book__section')
-                bookSection.innerHTML += `<img class="cover" src = \'https://wolnelektury.pl/media/${data[i].cover_thumb}\'>`
+                bookSection.innerHTML = `<a href="#book" data-slug="${data[i].slug}"><img class="cover" 
+              src = \'https://wolnelektury.pl/media/${data[i].cover_thumb}\'></a>`
                 bookSection.append(bookContent);
                 bookContent.innerHTML = `
-                <h4><a href="#book" data-slug="${data[i].slug}">${data[i].title} </a></h4>
+                <h4><a href="#book" data-slug="${data[i].slug}">${data[i].title}</a></h4>
                 <h5>${data[i].author} </h5>
                 <h6>${data[i].kind} </h6>`
                 if (data[i].has_audio) {
@@ -21,7 +22,7 @@ const HomePage = {
             } else {
                 let end = document.createElement('div');
                 end.setAttribute('id', 'end');
-                end.classList.add('book__section')
+                end.classList.add('book__section');
                 catalogSection.append(end);
             }
         }

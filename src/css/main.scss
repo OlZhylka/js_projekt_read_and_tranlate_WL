@@ -1,7 +1,10 @@
 body {
   font-family: "Roboto";
   background-color: white;
-;
+
+  .disabled {
+    display: none;
+  }
 
   .container {
     max-width: 1200px;

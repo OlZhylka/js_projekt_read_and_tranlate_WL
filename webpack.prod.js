@@ -9,7 +9,6 @@ module.exports = {
   mode: 'production',
   entry: [
     './src/js/index.js',
-    './src/css/style.css',
   ],
   output: {
     path: path.resolve(__dirname, 'public'),
@@ -31,21 +30,28 @@ module.exports = {
         use: ['babel-loader'],
       },
       {
-        test: /\.css$/,
+        test: /\.(scss|css)$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {},
           },
           {
             loader: 'css-loader',
             options: {
+              sourceMap: true,
               importLoaders: 1,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
             },
           },
           {
             loader: 'postcss-loader',
             options: {
+              sourceMap: true,
               config: {
                 path: 'postcss.config.js',
               },
@@ -97,8 +103,8 @@ module.exports = {
         to: path.resolve(__dirname, 'public/img'),
       },
       {
-        from: path.resolve(__dirname, 'src/favicon.ico'),
-        to: path.resolve(__dirname, 'public/'),
+        from: path.resolve(__dirname, 'src/sound'),
+        to: path.resolve(__dirname, 'public/sound'),
       },
     ]),
     new HtmlWebpackPlugin({

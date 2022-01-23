@@ -3,7 +3,7 @@
       flex-basis: calc(100% / 3 - 20px);
       display: flex;
       flex-wrap: nowrap;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
 
       .cover {
         margin-right: 10px;
@@ -13,9 +13,6 @@
         max-width: 139px;
         max-height: 193px;
       }
-
-
-
 
       [src$="_audio.png"] {
         width: 30px;

@@ -6,12 +6,10 @@
   "author": "",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "eslint:--fix": "eslint --fix ./src/js/*",
-    "fix": "yarn eslint:--fix && yarn stylelint:--fix",
-    "start": "webpack-dev-server --config webpack.dev.js",
-    "stylelint:--fix": "stylelint ./**/*.css !./public/**/*.css --fix"
+    "start": "webpack-dev-server --config webpack.dev.js"
   },
   "dependencies": {
+    "firebase": "^9.6.4",
     "jquery": "^3.3.1",
     "jquery-validation": "^1.17.0",
     "normalize.css": "^8.0.0"
@@ -31,6 +29,7 @@
     "html-webpack-plugin": "3",
     "imagemin-webpack-plugin": "^2.1.1",
     "mini-css-extract-plugin": "^0.4.2",
+    "node-normalize-scss": "^8.1.2",
     "open-browser-webpack-plugin": "^0.0.5",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "postcss-import": "^12.0.0",

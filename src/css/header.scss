@@ -1,8 +1,8 @@
 header {
+  background: linear-gradient(0deg, rgb(226, 206, 192), rgb(249, 249, 249) 100%);
   flex-basis: 100%;
     display: flex;
   box-sizing: border-box;
-  /*width: 100%;*/
   border-bottom: #2be263 1px solid;
   height: 100%;
   color: $font-color;
@@ -10,7 +10,17 @@ header {
   align-items: center;
   padding: 10px 10px;
 
+  .title_project {
+    flex-basis: 70%;
+     font-size: 58px;
+     color: #09ba3d;
+
+
+  }
+
 }
+
+
 
 
 

@@ -2,6 +2,7 @@ const Header = {
 
     render: () => {
         return `
+<div id="spaHeader">
         <header class="header" id="header">
       <a href="/" id="logo">
            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -15,12 +16,15 @@ const Header = {
 
 </a>
 
-  <div class="title_project">Почиталочка</div>
-  <div><span id="userName">User Name</span>
-  <a href="#account"><button class="button__enter disabled" id="enter">Перейти в кабинет</button></a>
-  <button class="button__enter" id="singIn">Вход</button>
-  </div>
+  <div class="title_project">Прочиталочка</div>
+  <div class="info">Читай и прокачивай словарный запас</div>
+  <div id="userName">Пользователь</div>
+  <a href="#account"><button class="button__enter disabled" id="enter"> Перейти в&nbsp;кабинет</button></a>
+  <button class="button__enter" id="singIn">Вход</button></>
+  
          </header>
+         </div>
+         
       `;
 
 

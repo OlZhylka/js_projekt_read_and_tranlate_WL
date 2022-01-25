@@ -1,9 +1,9 @@
-import {getDatabase, ref, set} from "firebase/database";
+import {getDatabase, onValue, ref, set, remove} from "firebase/database";
 
 function ContentModel() {
     let self = this;
     let myContentView = null;
-    let slug = null;
+    const db = getDatabase();
     let clickLink = null;
     let offset = 0; //положение, с которого начинать читать массив
     let chapter = 0;
@@ -25,6 +25,7 @@ function ContentModel() {
             sessionStorage.setItem(key, JSON.stringify(value));
         }
     }
+    let slug = self.getStorage('local', 'slug');
     reduce = self.getStorage('session', 'books');
     this.updateState = async function (_pageName) {
         let data = null;
@@ -40,6 +41,8 @@ function ContentModel() {
             self.setChapter(1);
         } else if (_pageName == 'account') {
             self.workAccount()
+        } else if (_pageName == 'read') {
+            myContentView.insertRead(slug)
         }
 
     }
@@ -85,12 +88,12 @@ function ContentModel() {
 
     this.setSlug = function (bookSlug){
         console.log(33333444444, bookSlug)
+        self.setStorage('local', 'slug', bookSlug)
         slug = bookSlug;
         clickLink = true;
     }
 
     this.getBook = async function () {
-        console.log(1515155555, clickLink, slug)
         let singleBook = self.getStorage('local', 'singleBook');
         if (singleBook && !clickLink) {
             console.log(566666555555555)
@@ -114,7 +117,14 @@ function ContentModel() {
     }
 
     this.workAccount = function () {
-        myContentView.insertAccount()
+        let user = this.getStorage('local', 'user')
+        let id = 'id_'+user.email.replace('.', '_')
+        let data = '';
+        const starCountRef = ref(db, id+'/');
+        onValue(starCountRef, (snapshot) => {
+            data = snapshot.val();
+            myContentView.insertAccount(data);
+        })
     }
 
     this.setChapter = function (check) {
@@ -150,13 +160,18 @@ function ContentModel() {
 
         console.log(8989898989, user, book.slug)
         let id = 'id_'+user.email.replace('.', '_')
-        const db = getDatabase();
         let books = {
             title: book.title,
             cover_thumb: book.cover_thumb,
             author: book.authors[0].name
         };
         set(ref(db, id+'/books/'+book.slug+'/'),books);
+    }
+    this.deleteBookFromList = function (elem, slug){
+        let user = self.getStorage('local', 'user');
+        let id = 'id_'+user.email.replace('.', '_');
+        remove(ref(db, id+'/books/'+slug+'/'));
+        myContentView.removeElementOfList(elem);
     }
 
 }

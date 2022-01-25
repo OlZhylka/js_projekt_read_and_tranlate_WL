@@ -1,8 +1,9 @@
 const FilterAuthors = {
     render: (data) => {
         let resultAuthors;
+        data = data.authors;
         console.log(888,data)
-        resultAuthors += `<option value="Выберите автора" selected>Выберите автора</option>`
+        resultAuthors += `<option value="default" selected>Выберите автора</option>`
               for (let i = 0; i < data.length; i++) {
 
             resultAuthors += `
@@ -11,12 +12,12 @@ const FilterAuthors = {
         }
 
         return `
+       <h1><a href="/">Каталог</a></h1>
        <h3>Автор</h3>
-       <select id="authors" name="select__author"> <!--Supplement an id here instead of using 'name'-->
+       <select id="authors" name="select__author">
+       
             ${resultAuthors},
        </select>
-     
-      
       `;
     }
 }

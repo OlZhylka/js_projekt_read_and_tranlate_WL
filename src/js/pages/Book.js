@@ -16,6 +16,7 @@ const BookPage = {
         bookDetails.innerHTML = '';
         console.log('bookpage', data);
         let bookCover = document.createElement('div');
+        let buttonRead = document.createElement('button');
         let bookBox = document.createElement("div");
         let buttonAddToMe = document.createElement("div");
         let bookAuthor = document.createElement('h3');
@@ -46,10 +47,9 @@ const BookPage = {
             let bookContent = document.createElement('div');
             bookSection.classList.add('book__section')
             bookSection.innerHTML = `<a href="#book" data-slug="${data.slug}">
-<img class="book__cover" src = \'${data.cover_thumb}\'></a>`
+<img class="book__cover" src = \'${data.cover_thumb}\'></a>`;
             bookSection.append(bookContent);
-            bookContent.innerHTML = `
-                <h4><a href="#book" data-slug="${data.slug}">${data.title}</a></h4>
+            bookContent.innerHTML = `<h4><a href="#book" data-slug="${data.slug}">${data.title}</a></h4>
                 <h5>${data.author} </h5>
                 <h6>${data.kind} </h6>`
             // if (data.has_audio) {
@@ -64,6 +64,10 @@ const BookPage = {
 
 
         bookCover.innerHTML = `<img class="book__cover" src = \'${data.cover_thumb}\'>`;
+        bookCover.append(buttonRead);
+        buttonRead.innerHTML=`<a href='#read'>Читать</a>`;
+        buttonRead.id="buttonRead";
+        buttonRead.dataset.slug =data.slug;
         buttonAddToMe.innerHTML = `<svg width="40" height="42" viewBox="0 0 40 42" fill="none" 
 xmlns="http://www.w3.org/2000/svg">
 <path d="M19.9999 2.17681L25.7269 14.3796L25.8403 14.6211L26.1041 
@@ -92,19 +96,19 @@ xmlns="http://www.w3.org/2000/svg">
         }
         if (data.epub) {
             filesForDownload.innerHTML += `<button class="_epub">
-<a class href="${data.epub}"> epub </a></button>`;
+<a href="${data.epub}"> epub </a></button>`;
         }
         if (data.fb2) {
             filesForDownload.innerHTML += `<button class="_epub">
-<a class href="${data.fb2}"> fb2 </a></button>`;
+<a href="${data.fb2}"> fb2 </a></button>`;
         }
         if (data.pdf) {
             filesForDownload.innerHTML += `<button class="_epub">
-<a class href="${data.pdf}"> pdf </a></button>`;
+<a href="${data.pdf}"> pdf </a></button>`;
         }
         if (data.txt) {
             filesForDownload.innerHTML += `<button class="_epub">
-<a class href="${data.txt}"> txt </a></button>`;
+<a href="${data.txt}"> txt </a></button>`;
         }
 
         bookAuthor.textContent = data.authors[0].name;

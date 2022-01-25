@@ -14,7 +14,8 @@ const HomePage = {
                 bookContent.innerHTML = `
                 <h4><a href="#book" data-slug="${data[i].slug}">${data[i].title}</a></h4>
                 <h5>${data[i].author} </h5>
-                <h6>${data[i].kind} </h6>`
+                <h6>${data[i].kind} </h6>
+                <h6>${data[i].genre} </h6>`
                 if (data[i].has_audio) {
                     bookContent.innerHTML += `<img title="есть аудиокнига" src=\'img/book_audio.png\'>`
                 }
@@ -30,7 +31,7 @@ const HomePage = {
     render: (className = "container", ...rest) => {
         return `
       <section class = "${className}">
-                <h1>Библиотека</h1>
+                <h1 class="title_library">Библиотека</h1>
          <div class="catalog__section" id="catalogSection">
         </div>
                

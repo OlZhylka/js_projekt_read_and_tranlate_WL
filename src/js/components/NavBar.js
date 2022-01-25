@@ -2,12 +2,13 @@ const NavBar = {
     render: () => {
         return `
         <nav class="navBar" >
-        <h2>Каталог</h2>
+        <div class="navBar__fix">
+        
      
-<div id="navBar"></div>
+        <div id="navBar"></div>
    
-       <button class="button__find" >Найти</button>
-            
+      <a href="#main"><button class="button__find" >Найти</button></a>
+            </div>
            </nav>
       `;
     }

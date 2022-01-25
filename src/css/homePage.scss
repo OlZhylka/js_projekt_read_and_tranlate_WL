@@ -3,7 +3,14 @@
       flex-basis: calc(100% / 3 - 20px);
       display: flex;
       flex-wrap: nowrap;
-      margin-bottom: 50px;
+      margin-bottom: 60px;
+
+      h5{
+        margin: 10px 0;
+      }
+      h6{
+        margin: 8px 0;
+      }
 
       .cover {
         margin-right: 10px;

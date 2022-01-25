@@ -52,5 +52,14 @@ function ContentView() {
         const account = document.getElementById("account");
         routes['account'].insert(data, account);
     }
+
+    this.insertRead = function (data) {
+        const read = document.getElementById("readDetails");
+        routes['read'].insert(data, read);
+    }
+    this.removeElementOfList = function (elem) {
+        elem.remove();
+    }
+
 }
 export default ContentView;

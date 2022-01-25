@@ -9,14 +9,16 @@ const SingIn = {
         return `
 <div id="modal_singIn" class="form disabled">
     <div class="close"></div>
-    <h2 class="title_form">Добро пожаловать!</h2>
+    <h3 >Добро пожаловать!</h3>
     <div class="rowForm">
         <div>Your E-mail: </div>
         <input type="email" id="userEmail">
         <div>Password: </div>
         <input type="password" id="userPass">
+     </div>
+    
         <button class="button__enter">Войти</button>
-    </div>
+  
 </div>
 <div id="modal_background" class="disabled"></div>
       `;

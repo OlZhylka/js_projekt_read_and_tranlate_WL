@@ -1,21 +1,45 @@
-header {
+#spaHeader {
   background: linear-gradient(0deg, rgb(226, 206, 192), rgb(249, 249, 249) 100%);
+position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.headerBack {
+  height: 100px;
+}
+  header {
+  color: #8b50ca;
+
+  max-width: 1200px;
+  margin: auto;
   flex-basis: 100%;
-    display: flex;
+  display: flex;
   box-sizing: border-box;
   border-bottom: #2be263 1px solid;
   height: 100%;
-  color: $font-color;
   justify-content: space-between;
+  vertical-align: center;
   align-items: center;
   padding: 10px 10px;
 
   .title_project {
-    flex-basis: 70%;
-     font-size: 58px;
-     color: #09ba3d;
+    flex-basis: 30%;
+    padding: 0 20px;
+     font-size: 40px;
 
+  }
+  .info {
+    padding: 0 10px;
+    flex-basis: 30%;
+    font-size: 20px;
+    font-style: italic;
+    text-align: center;
+  }
 
+  #userName {
+    margin-left: 20px;
   }
 
 }

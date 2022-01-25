@@ -1,15 +1,56 @@
 .navBar {
- flex-basis: 20%;
-}
-select {
-  font-size: 14px;
-  padding: 5px;
-  width: 100%;
-  min-width: 230px;
-background-color: rgb(52 226 104 / 70%);
-  border-color: #2be262;
-  box-shadow: inset 0px 0px 10px 0px #076423;
-  border-radius: 20rem;
-}
+  margin-top: 40px;
+  flex-basis: 20%;
+  position: relative;
 
+  a {
+    color: #8e2bcc;
+    text-decoration: none;
+
+    &:active {
+      color: #8d111c;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__fix {
+    position: fixed;
+    width: 220px;
+  }
+
+  .forAddToVacabulary {
+
+    color: #491c5f;
+
+
+    & > div {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    input {
+      width: 180px;
+      box-shadow: 5px 5px 5px -5px rgba(182, 60, 219, 0.6) inset;
+      font-size: 18px;
+      background-color: #e5d3f3;
+      border-color: white;
+      margin-bottom: 12px;
+      margin-right: 10px;
+    }
+
+  }
+
+  select {
+    font-size: 14px;
+    padding: 5px;
+    width: 100%;
+    min-width: 150px;
+    background-color: rgb(52 226 104 / 70%);
+    border-color: #2be262;
+    box-shadow: inset 0px 0px 10px 0px #076423;
+    border-radius: 20rem;
+  }
+}
 

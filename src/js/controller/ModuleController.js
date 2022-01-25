@@ -18,16 +18,35 @@ function ModuleController() {
         const modalBackground = document.getElementById("modal_background");
         const closeSingIn = modalSingIn.querySelector(".close");
         const buttonSubmit = modalSingIn.querySelector(".button__enter");
+        const buttonAddWord = document.getElementById("addWord");
 
         buttonFind.addEventListener("click", getListOfBooks);
         buttonSingIn.addEventListener("click", openModalSingIn);
         closeSingIn.addEventListener("click", closeModalSingIn);
         buttonSubmit.addEventListener("click", submitSingIn);
+        buttonAddWord.addEventListener("click", addWord);
+
+        function addWord() {
+            let word = document.querySelector("input[name=word]").value;
+            let translate = document.querySelector("input[name=translate]").value;
+            myNawBarModel.addWordToBase(word, translate);
+            document.querySelector("input[name=word]").value = '';
+            document.querySelector("input[name=translate]").value = '';
+        }
 
         function getListOfBooks() {
+            console.log(963852)
             let authorSingle = document.getElementById("authors").value;
-            myNawBarModel.findBooksOfAuthor(authorSingle);
-            window.resultBooks = "";
+            let genreSingle = document.getElementById("genres").value;
+            let epikaCheck = document.getElementById("epika").checked;
+            let lirykaCheck = document.getElementById("liryka").checked;
+            let dramatCheck = document.getElementById("dramat").checked;
+            let kinds={
+                epika: epikaCheck,
+                liryka: lirykaCheck,
+                dramat: dramatCheck,
+            }
+            myNawBarModel.findBooksOfAuthor(authorSingle,genreSingle,kinds);
             self.updateState();
             // console.log(36,authorSingle.value);
         }
@@ -83,7 +102,7 @@ function ModuleController() {
                 console.log(45454545, e.target)
                 if (e.target.dataset.slug) {
                     myContentModel.setSlug(e.target.dataset.slug);
-                    self.updateState(e.target.dataset.slug, true);
+                    self.updateState();
                 }
             })
         } else if (hashPageName == "book") {
@@ -105,6 +124,17 @@ function ModuleController() {
             }
             let buttonAddToMe = document.getElementById("addingBook");
             let buttonAdd = buttonAddToMe.querySelector("svg");
+            const buttonRead =  document.getElementById("buttonRead");
+
+            buttonRead.addEventListener("click", readOnLine);
+
+            function readOnLine(e){
+                if (e.target.dataset.slug) {
+                    myContentModel.setSlug(e.target.dataset.slug);
+                    self.updateState();
+                }
+            }
+
             buttonAdd.addEventListener("click", soundAndFillClick);
             console.log(4343435, buttonAdd)
             // Добавлен звук и цвет по клику
@@ -117,10 +147,23 @@ function ModuleController() {
             }
 
 
-        }
-    }
-    this.startPlayer = function () {
+        }else if (hashPageName == "account") {
+            let listBooks = document.querySelector("#account");
+            listBooks.addEventListener("click", findBook)
+            function findBook(e) {
 
+                if (e.target.dataset.slug) {
+                    myContentModel.setSlug(e.target.dataset.slug);
+                    self.updateState();
+                }
+                if(e.target.classList.contains('delete')){
+                    let parentLi=e.target.parentNode;
+                    let slug=parentLi.querySelector(".titleInList").dataset.slug
+                    console.log(66666,slug)
+                    myContentModel.deleteBookFromList(parentLi, slug);
+                }
+            }
+        }
     }
 }
 export default ModuleController;

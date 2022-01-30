@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
@@ -107,5 +108,11 @@ module.exports = {
       template: path.resolve(__dirname, 'src/index.html'),
       filename: path.resolve(__dirname, 'public/index.html'),
     }),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "window.jQuery": "jquery'",
+      "window.$": "jquery"
+    })
   ],
 };

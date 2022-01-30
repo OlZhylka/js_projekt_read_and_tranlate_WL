@@ -111,10 +111,6 @@ function ModuleController() {
 
         // вешаем слушателей на событие hashchange и кликам по пунктам меню
         window.addEventListener("hashchange", this.updateState);
-        // myModuleContainer.querySelector("#mainmenu").addEventListener("click", function (event) {
-        //     event.preventDefault();
-        //     window.location.hash = event.target.getAttribute("href");
-        // });
 
         this.updateState(); //первая отрисовка
     }
@@ -122,10 +118,19 @@ function ModuleController() {
     this.updateState = async function (offset) {
 
         myHeaderModel.toggleButtonHeader();
-        const hashPageName = location.hash.slice(1).toLowerCase();
-        await myContentModel.updateState(hashPageName, offset);
-        myNawBarModel.changeDisabledForButtonAddWord()
 
+        // записываем значение после # из url
+        const hashPageName = location.hash.slice(1).toLowerCase();
+
+        // перерисовываем страницу по значению hashPageName
+        await myContentModel.updateState(hashPageName, offset);
+
+        // проверяем состояние кнопок в зависимости от того,
+        // зарегистрирован ли пользователь
+        myNawBarModel.changeDisabledForButtonAddWord();
+
+        // удаляем слушатель scroll на всех страницах
+        document.removeEventListener("scroll", addBooksToView);
         function addBooksToView() {
             let end = document.getElementById('end')
 
@@ -134,7 +139,7 @@ function ModuleController() {
             }
         }
 
-        document.removeEventListener("scroll", addBooksToView);
+        // слушатели для страниц
         switch (hashPageName) {
             case "main":
             case "":

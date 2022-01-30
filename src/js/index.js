@@ -5,6 +5,7 @@ import {initializeApp} from "firebase/app";
 
 import '../scss/style.scss';
 
+// глобальная переменная для работы с каталогом книг
 window.reduce = "";
 
 import HeaderView from './view/HeaderView.js';
@@ -105,20 +106,22 @@ const mySPA = (function () {
             const controller = new ModuleController();
 
             //связываем части модуля
+            // инициализация View
             contentView.init(document.getElementById(root), routes);
             navBarView.init(filters);
             headerView.init();
             modalView.init();
+            // инициализация Model
             contentModel.init(contentView);
             await navBarModel.init(navBarView);
             headerModel.init(headerView);
             modalModel.init(modalView)
+            // инициализация Controller
             controller.init(document.getElementById(root), contentModel, navBarModel,headerModel,modalModel);
         },
 
+        // отрисовываем страницу
         renderComponents: function (root, components) {
-            // const containerHeader = document.getElementById('spaHeader');
-            // containerHeader.innerHTML = Header.render();
             const container = document.getElementById(root);
             for (let item in components) {
                 if (components.hasOwnProperty(item)) {

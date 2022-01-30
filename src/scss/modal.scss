@@ -2,8 +2,8 @@
   width: 350px;
   box-sizing: border-box;
   padding: 10px 20px;
-  background-color: #e5d3f3;;
-  border: #c096e2 solid 1px;
+  background-color: #fcfcfc;;
+  border: rgba(255, 255, 255, 0) solid 1px;
   border-radius: 16px;
   font-size: 14px;
   position: fixed;
@@ -12,12 +12,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
 
-  .button__enter {
-    height: 30px ;
-    position: relative;
-    top: 50%;
-    left: 50%;
+  .button__signUp {
+   margin-right: 40px;
   }
+
+
 
   .close::after {
     display: inline-block;

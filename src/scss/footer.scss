@@ -1,0 +1,19 @@
+#spaFooter {
+  background: linear-gradient(0deg, rgb(226, 206, 192), rgb(249, 249, 249) 100%);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  .footer {
+    font-size: 12px;
+    max-width: 1200px;
+    margin: auto;
+    height: 30px;
+    width: 100%;
+    padding: 15px 20px 5px;
+  }
+}
+.footerBack {
+  height: 30px;
+}

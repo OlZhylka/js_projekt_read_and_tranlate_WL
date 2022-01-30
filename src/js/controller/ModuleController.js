@@ -4,27 +4,40 @@ function ModuleController() {
     let myContentModel = null;
     let myNawBarModel = null;
     let myHeaderModel = null;
+    let myModalModel = null;
 
-    this.init = function (root, modelContent, modelNavBar,modelHeader) {
+    this.init = function (root, modelContent, modelNavBar, modelHeader, modelModal) {
+
+        const buttonFind = document.querySelector("button.button__find");
+        const buttonSignIn = document.getElementById("signIn");
+        const buttonSignOut = document.getElementById("signOut");
+        const modalSingIn = document.getElementById("modal_singIn");
+        const closeSingIn = modalSingIn.querySelector(".close");
+        const buttonSubmit = modalSingIn.querySelector("#submit");
+        const buttonRegistration = modalSingIn.querySelector("#registration");
+        const buttonAddWord = document.getElementById("addWord");
+        const modalSingUp = document.getElementById("modal_singUp");
+        const accordion = document.getElementById("accordion");
+        const closeSingUp = modalSingUp.querySelector(".close");
+        const buttonOK = modalSingUp.querySelector("#OK");
+
 
         myModuleContainer = root;
         myContentModel = modelContent;
         myNawBarModel = modelNavBar;
         myHeaderModel = modelHeader;
-
-        const buttonFind = document.querySelector("button.button__find");
-        const buttonSingIn = document.getElementById("singIn");
-        const modalSingIn = document.getElementById("modal_singIn");
-        const modalBackground = document.getElementById("modal_background");
-        const closeSingIn = modalSingIn.querySelector(".close");
-        const buttonSubmit = modalSingIn.querySelector(".button__enter");
-        const buttonAddWord = document.getElementById("addWord");
+        myModalModel = modelModal;
 
         buttonFind.addEventListener("click", getListOfBooks);
-        buttonSingIn.addEventListener("click", openModalSingIn);
-        closeSingIn.addEventListener("click", closeModalSingIn);
+        buttonSignIn.addEventListener("click", openModalSignIn);
+        closeSingIn.addEventListener("click", closeModalSignIn);
+        buttonRegistration.addEventListener("click", goToRegistration)
+        buttonSignOut.addEventListener("click", outFromAccount);
         buttonSubmit.addEventListener("click", submitSingIn);
         buttonAddWord.addEventListener("click", addWord);
+        closeSingUp.addEventListener("click", closeModalSignUp);
+        buttonOK.addEventListener("click", registrateUser);
+        accordion.addEventListener("click", showHideMenu);
 
         function addWord() {
             let word = document.querySelector("input[name=word]").value;
@@ -35,42 +48,69 @@ function ModuleController() {
         }
 
         function getListOfBooks() {
-            console.log(963852)
             let authorSingle = document.getElementById("authors").value;
             let genreSingle = document.getElementById("genres").value;
             let epikaCheck = document.getElementById("epika").checked;
             let lirykaCheck = document.getElementById("liryka").checked;
             let dramatCheck = document.getElementById("dramat").checked;
-            let kinds={
+            let kinds = {
                 epika: epikaCheck,
                 liryka: lirykaCheck,
                 dramat: dramatCheck,
             }
-            myNawBarModel.findBooksOfAuthor(authorSingle,genreSingle,kinds);
+            myNawBarModel.findBooksOfAuthor(authorSingle, genreSingle, kinds);
             self.updateState();
-            // console.log(36,authorSingle.value);
+            showHideMenu();
         }
 
-        function openModalSingIn() {
-            modalSingIn.classList.remove("disabled");
-            modalBackground.classList.remove("disabled");
+        function openModalSignIn() {
+            myModalModel.openModalSignIn();
         }
 
-        function closeModalSingIn() {
-            modalSingIn.classList.add("disabled");
-            modalBackground.classList.add("disabled");
+        function closeModalSignIn() {
+            myModalModel.closeModal(modalSingIn);
         }
-        function submitSingIn() {
-            let email = document.getElementById("userEmail")
-            let password = document.getElementById("userPass")
-            console.log(email.value, password.value);
-            myHeaderModel.login(email.value, password.value)
-            closeModalSingIn();
+
+        function closeModalSignUp() {
+            myModalModel.closeModal(modalSingUp);
+        }
+
+        async function submitSingIn() {
+            let email = document.getElementById("userEmail").value;
+            let password = document.getElementById("userPass").value;
+            if (email && password) {
+                await myHeaderModel.login(email, password);
+            }
+            myNawBarModel.changeDisabledForButtonAddWord()
+            myContentModel.showHideForAddingBook();
+            closeModalSignIn();
+        }
+
+        function goToRegistration() {
+            myModalModel.goToRegistration();
+        }
+
+        async function outFromAccount() {
+            await myHeaderModel.outFromAccount();
+            myNawBarModel.changeDisabledForButtonAddWord();
+        }
+
+        function registrateUser() {
+            let email = document.getElementById("newEmail").value;
+            let password = document.getElementById("newPass").value;
+            let userName = document.getElementById("newUserName").value;
+            if (email && password && userName) {
+                myModalModel.registrateUser(email, password, userName);
+            }
+            closeModalSignUp();
+        }
+
+        function showHideMenu() {
+            myNawBarModel.showHideMobileMenu()
         }
 
         // вешаем слушателей на событие hashchange и кликам по пунктам меню
         window.addEventListener("hashchange", this.updateState);
-
         // myModuleContainer.querySelector("#mainmenu").addEventListener("click", function (event) {
         //     event.preventDefault();
         //     window.location.hash = event.target.getAttribute("href");
@@ -80,64 +120,72 @@ function ModuleController() {
     }
 
     this.updateState = async function (offset) {
+
+        myHeaderModel.toggleButtonHeader();
         const hashPageName = location.hash.slice(1).toLowerCase();
         await myContentModel.updateState(hashPageName, offset);
+        myNawBarModel.changeDisabledForButtonAddWord()
 
-        function inView() {
+        function addBooksToView() {
             let end = document.getElementById('end')
 
             if (document.getElementById("spa").getBoundingClientRect().bottom <= window.innerHeight && !end) {
-                console.log('inView', window.innerHeight);
                 myContentModel.insertContent();
-                // uncomment below if you only want it to notify once
-                // document.removeEventListener("scroll", inView);
             }
         }
 
-        window.removeEventListener("click", inView);
-        if (hashPageName == "main" || !hashPageName) {
-            const catalogSection = document.getElementById("catalogSection");
-            window.addEventListener("scroll", inView);
-            catalogSection.addEventListener("click", function (e) {
-                console.log(45454545, e.target)
+        document.removeEventListener("scroll", addBooksToView);
+        switch (hashPageName) {
+            case "main":
+            case "":
+
+                const catalogSection = document.getElementById("catalogSection");
+                document.addEventListener("scroll", addBooksToView);
+                catalogSection.addEventListener("click", function (e) {
+                    if (e.target.dataset.slug) {
+                        myContentModel.setSlug(e.target.dataset.slug);
+                        self.updateState();
+                    }
+                })
+                break;
+            case "book":
+                const anotherBooks = document.getElementById("another_books");
+                anotherBooks.addEventListener("click", function (e) {
+                    if (e.target.dataset.slug) {
+                        myContentModel.setSlug(e.target.dataset.slug);
+                        self.updateState();
+                    }
+                })
+                const prevAudio = document.getElementById("prevAudio");
+                if (prevAudio) {
+                    prevAudio.addEventListener("click", function () {
+                        myContentModel.setChapter(0);
+                        myContentModel.setPlayer()
+                    })
+                }
+                const nextAudio = document.getElementById("nextAudio");
+                if (nextAudio) {
+                    nextAudio.addEventListener("click", function () {
+                        myContentModel.setChapter(1);
+                        myContentModel.setPlayer()
+                    })
+                }
+                let buttonAddToMe = document.getElementById("addingBook");
+                let buttonAdd = buttonAddToMe.querySelector("svg");
+                const buttonRead = document.getElementById("buttonRead");
+
+                buttonRead.addEventListener("click", readOnLine);
+
+            function readOnLine(e) {
                 if (e.target.dataset.slug) {
                     myContentModel.setSlug(e.target.dataset.slug);
                     self.updateState();
                 }
-            })
-        } else if (hashPageName == "book") {
-            const prevAudio = document.getElementById("prevAudio");
-            if (prevAudio) {
-                prevAudio.addEventListener("click", function () {
-                    myContentModel.setChapter(0);
-                    myContentModel.setPlayer()
-                    console.log(111111)
-                })
-            }
-            const nextAudio = document.getElementById("nextAudio");
-            if (nextAudio) {
-                nextAudio.addEventListener("click", function () {
-                    myContentModel.setChapter(1);
-                    myContentModel.setPlayer()
-                    console.log(2222222)
-                })
-            }
-            let buttonAddToMe = document.getElementById("addingBook");
-            let buttonAdd = buttonAddToMe.querySelector("svg");
-            const buttonRead =  document.getElementById("buttonRead");
-
-            buttonRead.addEventListener("click", readOnLine);
-
-            function readOnLine(e){
-                if (e.target.dataset.slug) {
-                    myContentModel.setSlug(e.target.dataset.slug);
-                    self.updateState();
-                }
             }
 
-            buttonAdd.addEventListener("click", soundAndFillClick);
-            console.log(4343435, buttonAdd)
-            // Добавлен звук и цвет по клику
+                buttonAdd.addEventListener("click", soundAndFillClick);
+
+                // Добавлен звук и цвет по клику
             function soundAndFillClick() {
                 let shortSound = new Audio(); // Создаём новый элемент Audio
                 shortSound.src = 'sound/add.mp3'; // Указываем путь к звуку "клика"
@@ -146,24 +194,67 @@ function ModuleController() {
                 myContentModel.setUserBook()
             }
 
+                break;
+            case "account":
+                let account = document.getElementById("account");
 
-        }else if (hashPageName == "account") {
-            let listBooks = document.querySelector("#account");
-            listBooks.addEventListener("click", findBook)
-            function findBook(e) {
+                account.addEventListener("click", doSomethingInAccount);
 
+            async function doSomethingInAccount(e) {
+//переход поклику на страницу книги в списке
                 if (e.target.dataset.slug) {
                     myContentModel.setSlug(e.target.dataset.slug);
                     self.updateState();
                 }
-                if(e.target.classList.contains('delete')){
-                    let parentLi=e.target.parentNode;
-                    let slug=parentLi.querySelector(".titleInList").dataset.slug
-                    console.log(66666,slug)
+                //удаление позиции в списке
+                if (e.target.classList.contains('delete')) {
+                    let parentLi = e.target.parentNode;
+                    let slug = parentLi.querySelector(".titleInList").dataset.slug
                     myContentModel.deleteBookFromList(parentLi, slug);
                 }
+//добавление катрочки cо словом из селекта на стол
+                if (e.target.id == "wordToCard") {
+                    // Добавлен звук
+                    let addCardSound = new Audio(); // Создаём новый элемент Audio
+                    addCardSound.src = 'sound/addCard.mp3'; // Указываем путь к звуку "клика"
+                    addCardSound.autoplay = true; // Автоматически запускаем
+                    let wordID = account.querySelector("#vocabulary").value;
+                    await myContentModel.addCardToWorkZone(wordID);
+                    let newCardLearn = document.querySelector(`[data-word-id=${wordID}]`)
+                    newCardLearn.addEventListener("mouseup", function () {
+                        const finishFolder = document.getElementById('finishBox')
+                        myContentModel.addCardToFinishFolder(wordID, newCardLearn, finishFolder)
+                    })
+                }
+                // удаление карточки со стола
+                if (e.target.classList.contains('deleteCard')) {
+                    let crossForDeleteCard = e.target;
+                    let vocabularySelect = account.querySelector("#vocabulary");
+                    myContentModel.restoreOption(crossForDeleteCard, vocabularySelect);
+                }
             }
+                break;
+            case "listofwords":
+                const listOfLearnedWords = document.getElementById("listOfLearnedWords");
+                listOfLearnedWords.addEventListener("click", backOrDeleteWord);
+
+            function backOrDeleteWord(e) {
+                if (e.target.classList.contains('backToSelect')) {
+                    let liWord = e.target.parentNode;
+                    let wordID = liWord.dataset.id;
+                    myContentModel.backWordToSelect(wordID, liWord);
+                }
+                if (e.target.classList.contains('deleteWord')) {
+                    let liWord = e.target.parentNode;
+                    let wordID = liWord.dataset.id;
+                    myContentModel.deleteWordFromVocabulary(wordID, liWord);
+                }
+            }
+
+                break;
+            default:
         }
     }
 }
+
 export default ModuleController;

@@ -30,7 +30,6 @@ function NavBarModel() {
                 .then((response) => response.json())
                 .then((data) => {
                     self.setStorage("session", 'authors', data);
-                    console.log("auth", data);
                     authors = data;
                 })
         }
@@ -42,7 +41,6 @@ function NavBarModel() {
                 .then((response) => response.json())
                 .then((data) => {
                     self.setStorage("session", "genres", data)
-                    console.log("genres", data);
                     genres = data;
                 })
         }
@@ -52,8 +50,6 @@ function NavBarModel() {
             genres: genres,
         }
 
-        console.log(989898989, data);
-
         myNavBarView.renderFilter(data);
         // return authors;   // Этот массив нам надо передать в селект. и чтобы он уже там был
         // при первой загрузке,поэтому вызываем его в контроллере
@@ -61,8 +57,6 @@ function NavBarModel() {
 
     this.findBooksOfAuthor = function (_author, _genre, _kinds) {
         let books = self.getStorage("session", "books");
-        console.log(21, _author, _genre, _kinds);
-
         let booksAfterFilterChoose = [];
         if (_author != "default") {
             for (let key in books) {
@@ -119,9 +113,24 @@ function NavBarModel() {
         let id = 'id_' + user.email.replace('.', '_');
         let wordTranslate = {
             word: word.toLowerCase(),
-            translate: translate.toLowerCase()
+            translate: translate.toLowerCase(),
+            learned: 0
         }
         set(ref(db, id + '/words/id_' + word.toLowerCase() + '/'), wordTranslate);
+    }
+
+    this.showHideMobileMenu = function (){
+        myNavBarView.showHideMobileMenu()
+    }
+
+    this.changeDisabledForButtonAddWord = function (){
+        let user = self.getStorage('local', 'user');
+        const buttonAddWord = document.getElementById("addWord");
+        if (user) {
+            buttonAddWord.removeAttribute('disabled')
+        } else {
+            buttonAddWord.setAttribute('disabled', '')
+        }
     }
 
 }

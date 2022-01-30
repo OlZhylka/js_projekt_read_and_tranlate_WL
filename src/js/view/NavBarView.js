@@ -16,6 +16,11 @@ function NavBarView() {
         }
     }
 
+    this.showHideMobileMenu = function (){
+        const navbar = document.querySelector('nav');
+        navbar.classList.toggle('show');
+    }
+
 }
 
 

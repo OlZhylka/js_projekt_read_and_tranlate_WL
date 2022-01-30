@@ -128,6 +128,12 @@ module.exports = {
             template: path.resolve(__dirname, 'src/index.html'),
             filename: path.resolve(__dirname, 'public/index.html'),
         }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery'",
+            "window.$": "jquery"
+        })
         // new HtmlWebpackPlugin({
         //   inject: true,
         //   templateParameters,

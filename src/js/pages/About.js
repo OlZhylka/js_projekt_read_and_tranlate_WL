@@ -5,7 +5,7 @@ const About = {
     return `
       <section class="${className}">
         <h1>О проекте</h1>
-        <p>А здесь что-то как бы <strong>О ghjtrnt</strong> или о них =)</p>
+        <p>Проект разработан как библиотека для чтения литературы на иностранном язы <strong>О ghjtrnt</strong> или о них =)</p>
       </section>
     `;
   }

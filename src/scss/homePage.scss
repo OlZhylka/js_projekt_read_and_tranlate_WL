@@ -1,0 +1,82 @@
+.catalog__section {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+  min-height: 60vh;
+
+
+    .book__section {
+      flex-basis: calc(100% / 3 - 20px);
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: nowrap;
+      margin-bottom: 60px;
+
+      h5{
+        margin: 10px 0;
+      }
+      h6{
+        margin: 8px 0;
+      }
+
+      .cover {
+        margin-right: 10px;
+      }
+
+      img {
+        width: 140px;
+        max-height: 190px;
+      }
+
+      [src$="_audio.png"] {
+        width: 30px;
+        height: 30px;
+      }
+    }
+}
+
+@media (max-width: 1024px) {
+  .catalog__section {
+    .book__section {
+      flex-basis: 50%;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .catalog__section {
+    width: 100%;
+  }
+}
+
+    @media (max-width: 650px) {
+      .catalog__section {
+        display: block;
+      }
+    }
+
+@media (max-width: 450px) {
+  .catalog__section {
+    .title_library {
+      font-size: 20px;
+    }
+    .book__section {
+      margin-bottom: 30px;
+
+      h5{
+        font-size: 14px;
+      }
+      h6{
+        font-size: 12px;
+      }
+      img {
+        width: 110px;
+      }
+    }
+  }
+}
+
+
+

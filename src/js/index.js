@@ -1,25 +1,28 @@
-import {initializeApp} from "firebase/app";
-// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-// import { getDatabase, ref, onValue, set } from "firebase/database";
+require('webpack-jquery-ui');
+require('webpack-jquery-ui/css');
 
-// import 'node-normalize-scss';
-import '../css/style.scss';
+import {initializeApp} from "firebase/app";
+
+import '../scss/style.scss';
 
 window.reduce = "";
 
 import HeaderView from './view/HeaderView.js';
 import NavBarView from './view/NavBarView.js';
 import ContentView from './view/ContentView.js';
+import ModalView from './view/ModalView.js';
 
 import HeaderModel from './model/HeaderModel.js';
 import NavBarModel from './model/NavBarModel.js';
 import ContentModel from './model/ContentModel.js';
+import ModalModel from './model/ModalModel.js';
 
 import ModuleController from './controller/ModuleController.js';
 
 import HomePage from './pages/HomePage.js';
 import Book from './pages/Book.js';
 import Account from './pages/Account.js';
+import ListOfWords from './pages/ListOfWords.js';
 import About from './pages/About.js';
 import Contacts from './pages/Contacts.js';
 import ReadPage from './pages/ReadPage.js';
@@ -33,7 +36,7 @@ import FilterKinds from './filters/FilterKinds.js';
 
 import Navbar from './components/NavBar.js';
 import Header from './components/Header.js';
-import SingIn from './components/SingIn.js';
+import Modals from './components/Modals.js';
 import Footer from './components/Footer.js';
 
 import ContentContainer from './components/ContentContainer.js';
@@ -62,7 +65,7 @@ const components = {
     header: Header,
     navbar: Navbar,
     content: ContentContainer,
-    singIn: SingIn,
+    modals: Modals,
     footer: Footer,
 }
 
@@ -73,6 +76,7 @@ const routes = {
     account: Account,
     about: About,
     contacts: Contacts,
+    listofwords: ListOfWords,
     default: HomePage,
     error: ErrorPage,
 };
@@ -86,7 +90,6 @@ const filters = {
 
 /* ----- spa init module --- */
 const mySPA = (function () {
-
     return {
         init: async function (root, routes, components) {
             this.renderComponents(root, components);
@@ -94,19 +97,23 @@ const mySPA = (function () {
             const contentView = new ContentView();
             const navBarView = new NavBarView();
             const headerView = new HeaderView();
+            const modalView = new ModalView();
             const contentModel = new ContentModel();
             const navBarModel = new NavBarModel();
             const headerModel = new HeaderModel();
+            const modalModel = new ModalModel();
             const controller = new ModuleController();
 
             //связываем части модуля
             contentView.init(document.getElementById(root), routes);
             navBarView.init(filters);
             headerView.init();
+            modalView.init();
             contentModel.init(contentView);
             await navBarModel.init(navBarView);
             headerModel.init(headerView);
-            controller.init(document.getElementById(root), contentModel, navBarModel,headerModel);
+            modalModel.init(modalView)
+            controller.init(document.getElementById(root), contentModel, navBarModel,headerModel,modalModel);
         },
 
         renderComponents: function (root, components) {

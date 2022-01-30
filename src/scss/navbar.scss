@@ -1,7 +1,11 @@
 .navBar {
-  margin-top: 40px;
   flex-basis: 20%;
   position: relative;
+
+  &__fix {
+    position: fixed;
+    width: 220px;
+  }
 
   a {
     color: #8e2bcc;
@@ -10,33 +14,31 @@
     &:active {
       color: #8d111c;
     }
+
     &:hover {
       cursor: pointer;
     }
   }
 
-  &__fix {
-    position: fixed;
-    width: 220px;
-  }
 
-  .forAddToVacabulary {
-
+  .forAddToVocabulary {
     color: #491c5f;
+    width: 100%;
+    margin: 0 auto;
 
-
-    & > div {
+    #myWord, #myTranslate {
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 8px;
     }
+
     input {
       width: 180px;
       box-shadow: 5px 5px 5px -5px rgba(182, 60, 219, 0.6) inset;
       font-size: 18px;
       background-color: #e5d3f3;
       border-color: white;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       margin-right: 10px;
     }
 
@@ -52,5 +54,38 @@
     box-shadow: inset 0px 0px 10px 0px #076423;
     border-radius: 20rem;
   }
+  .checkboxGroup {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+      }
+
 }
 
+@media (max-width: 1450px) {
+  .navBar {
+    &__fix {
+      position: relative;
+      width: 20%;
+    }
+
+      }
+
+}
+@media (max-width: 800px) {
+  .navBar {
+   display: none;
+    position:absolute;
+    left: 0;
+    padding-left: 20px;
+    z-index: 100;
+    background-color: rgba(250, 250, 250, 0.9);
+  }
+
+  .show {
+    display: block;
+  }
+
+}

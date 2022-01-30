@@ -2,7 +2,6 @@ const FilterGenres = {
     render: (data) => {
         let resultGenres;
         data = data.genres
-        console.log(111,data)
         resultGenres += `<option value="default" selected>Выберите жанр</option>`
         for (let i = 0; i < data.length; i++) {
 

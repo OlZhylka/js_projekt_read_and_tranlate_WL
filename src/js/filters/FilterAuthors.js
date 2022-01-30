@@ -2,7 +2,6 @@ const FilterAuthors = {
     render: (data) => {
         let resultAuthors;
         data = data.authors;
-        console.log(888,data)
         resultAuthors += `<option value="default" selected>Выберите автора</option>`
               for (let i = 0; i < data.length; i++) {
 

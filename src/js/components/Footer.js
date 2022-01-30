@@ -2,7 +2,11 @@ const Header = {
 
     render: () => {
         return `
-        <div class="footer">&copy Olga Zhylko</div>        
+   <div id="spaFooter">  
+         <div class="footer">
+        &copy Olga Zhylko, создано для учебных целей
+        </div>
+   </div>        
         `;
 
 

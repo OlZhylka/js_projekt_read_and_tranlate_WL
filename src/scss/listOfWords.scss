@@ -1,0 +1,32 @@
+.titleListOfWords {
+  font-size: 24px;
+  color: #0a2de8;
+}
+ol {
+  li {
+    font-size: 18px;
+    line-height: 1.5;
+    .deleteWord::after {
+      content: "\00d7";
+      font-size: 20px;
+      font-weight: bold;
+      color: #d20523;
+      cursor: pointer;
+    }
+    .backToSelect::after {
+      content: "\2BAA";
+      font-size: 20px;
+      font-weight: bold;
+      color: #28cb0b;
+      cursor: pointer;
+    }
+a {
+  text-decoration: none;
+}
+
+
+
+
+  }
+
+}

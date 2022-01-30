@@ -1,4 +1,4 @@
-import {getDatabase, onValue, ref, set, remove} from "firebase/database";
+import {getDatabase, ref, set, remove, get, child} from "firebase/database";
 
 function ContentModel() {
     let self = this;
@@ -10,12 +10,16 @@ function ContentModel() {
     this.init = function (view) {
         myContentView = view;
     }
-
+    this.getUserID = function () {
+        let user = self.getStorage('local', 'user');
+        let id = 'id_' + user.email.replace('.', '_');
+        return id;
+    }
     this.getStorage = function (storage, key) {
         if (storage == 'local') {
             return JSON.parse(localStorage.getItem(key))
         } else if (storage == 'session') {
-            return  JSON.parse(sessionStorage.getItem(key))
+            return JSON.parse(sessionStorage.getItem(key))
         }
     }
     this.setStorage = function (storage, key, value) {
@@ -27,24 +31,33 @@ function ContentModel() {
     }
     let slug = self.getStorage('local', 'slug');
     reduce = self.getStorage('session', 'books');
+
     this.updateState = async function (_pageName) {
         let data = null;
         offset = 0;
 // _pageName -- это хвост от url страницы
         myContentView.renderContent(_pageName);
-        if (_pageName == 'main' || !_pageName) {
-            data = await self.getBooks();
-            myContentView.insertContent(data)
-        } else if (_pageName == 'book') {
-            console.log(333333333333333)
-            await self.getBook();
-            self.setChapter(1);
-        } else if (_pageName == 'account') {
-            self.workAccount()
-        } else if (_pageName == 'read') {
-            myContentView.insertRead(slug)
+        switch (_pageName) {
+            case 'main':
+            case '':
+                data = await self.getBooks();
+                myContentView.insertContent(data);
+                break;
+            case 'book':
+                await self.getBook();
+                self.showHideForAddingBook();
+                break;
+            case 'account':
+                self.workAccount()
+                break;
+            case 'read':
+                myContentView.insertRead(slug)
+                break;
+            case "listofwords":
+                await self.insertListOfWords(slug)
+                break;
+            default:
         }
-
     }
 
     this.insertContent = async function () {
@@ -86,8 +99,7 @@ function ContentModel() {
         return books;
     }
 
-    this.setSlug = function (bookSlug){
-        console.log(33333444444, bookSlug)
+    this.setSlug = function (bookSlug) {
         self.setStorage('local', 'slug', bookSlug)
         slug = bookSlug;
         clickLink = true;
@@ -96,33 +108,56 @@ function ContentModel() {
     this.getBook = async function () {
         let singleBook = self.getStorage('local', 'singleBook');
         if (singleBook && !clickLink) {
-            console.log(566666555555555)
-            myContentView.insertBookDetails(singleBook);
             clickLink = null;
         } else {
-            console.log(66666666655555555)
             await fetch(`https://wolnelektury.pl/api/books/${slug}?format=json`)
                 .then((response) => response.json())
                 .then((data) => {
+                    let media = []
+                    for (let i in data.media) {
+                        if (data.media[i].type == "mp3") {
+                            media.push(data.media[i])
+                        }
+                    }
+                    data.media = media;
                     data.slug = slug;
-                    console.log(151515, data, slug)
                     self.setStorage('local', 'singleBook', data);
-                    myContentView.insertBookDetails(data);
-                }).catch((e)=>{
-                    console.error('Error:'+e)
+                    singleBook = data;
+                    // myContentView.insertBookDetails(data);
+                }).catch((e) => {
+                    console.error('Error:' + e)
                 })
         }
+        myContentView.insertBookDetails(singleBook);
         chapter = 0;
         self.setPlayer();
+        self.getBooksOfAuthor(singleBook.authors[0].slug);
+    }
+
+    this.getBooksOfAuthor=function (slug){
+        // authors/edgar-allan-poe/books/
+        fetch(`https://wolnelektury.pl/api/authors/${slug}/books?format=json`)
+            .then((response) => response.json())
+            .then((data) => {
+                // self.setStorage('local', 'singleBook', data);
+                myContentView.insertBooksOfAuthor(data);
+            }).catch((e) => {
+            console.error('Error:' + e)
+        })
     }
 
     this.workAccount = function () {
-        let user = this.getStorage('local', 'user')
-        let id = 'id_'+user.email.replace('.', '_')
+        let id = self.getUserID();
         let data = '';
-        const starCountRef = ref(db, id+'/');
-        onValue(starCountRef, (snapshot) => {
+        get(child(ref(db), id + '/')).then( (snapshot) => {
             data = snapshot.val();
+            let words = [];
+            for (let key in data.words){
+                if(data.words[key].learned == 0) {
+                    words.push(data.words[key])
+                }
+            }
+            data.words = words;
             myContentView.insertAccount(data);
         })
     }
@@ -133,46 +168,120 @@ function ContentModel() {
         } else {
             chapter--;
         }
+        myContentView.changeNumberAudio(chapter + 1)
     }
     this.setPlayer = function () {
         let player = document.getElementById('player');
         if (player) {
-            let mp3 = [];
+            myContentView.changeNumberAudio(chapter + 1);
             let data = self.getStorage('local', 'singleBook');
-            for (let i in data.media) {
-                if (data.media[i].type == "mp3") {
-                    mp3.push(data.media[i])
-                }
-            }
-            myContentView.insertPlayer(player, mp3[chapter]);
+            myContentView.insertPlayer(player, data.media[chapter]);
             let audioPlayer = player.querySelector("#audioPlayer");
             if (audioPlayer) {
                 audioPlayer.addEventListener('ended', function () {
-                    myContentView.insertPlayer(player, mp3[chapter], "play");
+                    myContentView.insertPlayer(player, data.media[chapter], "play");
                 });
             }
         }
     }
 
     this.setUserBook = function () {
-        let user = self.getStorage('local', 'user');
         let book = self.getStorage('local', 'singleBook');
-
-        console.log(8989898989, user, book.slug)
-        let id = 'id_'+user.email.replace('.', '_')
+        let id = self.getUserID();
         let books = {
             title: book.title,
             cover_thumb: book.cover_thumb,
             author: book.authors[0].name
         };
-        set(ref(db, id+'/books/'+book.slug+'/'),books);
+        set(ref(db, id + '/books/' + book.slug + '/'), books);
     }
-    this.deleteBookFromList = function (elem, slug){
-        let user = self.getStorage('local', 'user');
-        let id = 'id_'+user.email.replace('.', '_');
-        remove(ref(db, id+'/books/'+slug+'/'));
+
+    this.deleteBookFromList = function (elem, slug) {
+        let id = self.getUserID();
+        remove(ref(db, id + '/books/' + slug + '/'));
         myContentView.removeElementOfList(elem);
     }
 
+    this.addCardToWorkZone = async function (wordID) {
+        if (wordID != "default") {
+            let id = self.getUserID();
+            myContentView.removeOptionInVocabularySelect(wordID);
+                // не используем изменени базы в текущем времени (onView), т.к.
+                // запускается перерисовка WorkZone
+                await get(child(ref(db), id + '/words/' + wordID + '/')).then( (snapshot) => {
+                let data = snapshot.val();
+                data.id = wordID;
+                myContentView.insertCardToWorkZone(data);
+            })
+        }
+    }
+
+    this.restoreOption = function (crossForDeleteCard, vocabularySelect) {
+        myContentView.restoreOption(crossForDeleteCard, vocabularySelect)
+    }
+
+    this.addCardToFinishFolder = function (wordId, card, finishFolder) {
+
+
+        let cardTop = card.offsetTop;
+        let cardWidth = card.offsetWidth;
+        let cardHeight = card.offsetHeight;
+        let cardLeft = card.offsetLeft;
+        let boxTop = finishFolder.offsetTop;
+        let boxLeft = finishFolder.offsetLeft;
+        let topHidden = boxTop - 0.5 * cardHeight;
+        let leftHidden = boxLeft - 0.5 * cardWidth;
+
+        if (cardTop >= topHidden && cardLeft >= leftHidden) {
+            // Добавлен звук
+            let wseGotowo = new Audio(); // Создаём новый элемент Audio
+            wseGotowo.src = 'sound/wseGotowo.mp3'; // Указываем путь к звуку "клика"
+            wseGotowo.autoplay = true; // Автоматически запускаем
+            let id = self.getUserID();
+            set(ref(db, `${id}/words/${wordId}/learned/`), 1);
+            myContentView.deleteElement(card)
+        }
+    }
+
+    this.insertListOfWords = async function (){
+        let id = self.getUserID();
+        let data = '';
+        // const starCountRef = ref(db, id + '/');
+        await get(child(ref(db), `${id}/words`)).then( (snapshot) => {
+            data = snapshot.val();
+            let words = [];
+            for (let key in data){
+                if(data[key].learned == 1) {
+                    data[key].id = key;
+                    words.push(data[key])
+                }
+            }
+            myContentView.insertListOfWords(words);
+        })
+    }
+    this.backWordToSelect= function (wordId,elem) {
+        let id = self.getUserID();
+        set(ref(db, `${id}/words/${wordId}/learned/`), 0);
+        myContentView.deleteElement(elem);
+    }
+
+    this.deleteWordFromVocabulary= function (wordId,elem){
+        let id = self.getUserID();
+        remove(ref(db, `${id}/words/${wordId}/`));
+        myContentView.deleteElement(elem);
+    }
+
+    this.showHideForAddingBook = function (){
+        let user = self.getStorage('local', 'user');
+        const addingBook = document.getElementById("addingBook");
+        if (addingBook) {
+            if (user) {
+                addingBook.classList.remove('hide')
+            } else {
+                addingBook.classList.add('hide')
+            }
+        }
+    }
 }
+
 export default ContentModel;

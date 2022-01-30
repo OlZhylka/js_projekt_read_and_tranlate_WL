@@ -3,7 +3,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const templateParameters = require('./src/template-parameters.js');
 
 module.exports = {
   mode: 'production',
@@ -95,10 +94,6 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, 'src/fonts'),
-        to: path.resolve(__dirname, 'public/fonts'),
-      },
-      {
         from: path.resolve(__dirname, 'src/img'),
         to: path.resolve(__dirname, 'public/img'),
       },
@@ -112,17 +107,5 @@ module.exports = {
       template: path.resolve(__dirname, 'src/index.html'),
       filename: path.resolve(__dirname, 'public/index.html'),
     }),
-    // new HtmlWebpackPlugin({
-    //   inject: true,
-    //   templateParameters,
-    //   template: path.resolve(__dirname, 'src/404.html'),
-    //   filename: path.resolve(__dirname, 'public/404.html'),
-    // }),
-    // new HtmlWebpackPlugin({
-    //   inject: true,
-    //   templateParameters,
-    //   template: path.resolve(__dirname, 'src/500.html'),
-    //   filename: path.resolve(__dirname, 'public/500.html'),
-    // }),
   ],
 };

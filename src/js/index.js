@@ -5,7 +5,7 @@ import {initializeApp} from "firebase/app";
 
 import '../scss/style.scss';
 
-// глобальная переменная для работы с каталогом книг
+// глобальная переменная для работы с каталогом книг (см. ContentModel 34 ...)
 window.reduce = "";
 
 import HeaderView from './view/HeaderView.js';

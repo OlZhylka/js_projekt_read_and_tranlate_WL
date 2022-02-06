@@ -10,6 +10,7 @@ function ContentModel() {
     this.init = function (view) {
         myContentView = view;
     }
+
     this.getUserID = function () {
         let user = self.getStorage('local', 'user');
         let id = 'id_' + user.email.replace('.', '_');
@@ -34,9 +35,10 @@ function ContentModel() {
 
     this.updateState = async function (_pageName) {
         let data = null;
-        offset = 0;
+        offset = 0; //положение, с которого начинать читать массив
 // _pageName -- это хвост от url страницы
         myContentView.renderContent(_pageName);
+
         switch (_pageName) {
             case 'main':
             case '':
@@ -95,7 +97,7 @@ function ContentModel() {
         } else {
             books.push('end')
         }
-        // начинаем читать следующие 9 элементов
+        // начинаем читать следующие элементы
         return books;
     }
 
@@ -111,7 +113,7 @@ function ContentModel() {
             clickLink = null;
         } else {
             await fetch(`https://wolnelektury.pl/api/books/${slug}?format=json`)
-                .then((response) => response.json())
+                .then((response) => response.json())//считываем ответ по запросу и получаем data
                 .then((data) => {
                     let media = []
                     for (let i in data.media) {
@@ -135,8 +137,7 @@ function ContentModel() {
     }
 
     this.getBooksOfAuthor=function (slug){
-        // authors/edgar-allan-poe/books/
-        fetch(`https://wolnelektury.pl/api/authors/${slug}/books?format=json`)
+              fetch(`https://wolnelektury.pl/api/authors/${slug}/books?format=json`)
             .then((response) => response.json())
             .then((data) => {
                 // self.setStorage('local', 'singleBook', data);
@@ -246,7 +247,7 @@ function ContentModel() {
     this.insertListOfWords = async function (){
         let id = self.getUserID();
         let data = '';
-        // const starCountRef = ref(db, id + '/');
+
         await get(child(ref(db), `${id}/words`)).then( (snapshot) => {
             data = snapshot.val();
             let words = [];
@@ -270,7 +271,7 @@ function ContentModel() {
         remove(ref(db, `${id}/words/${wordId}/`));
         myContentView.deleteElement(elem);
     }
-
+        //Прячу звездочку для неавторизованного пользователя
     this.showHideForAddingBook = function (){
         let user = self.getStorage('local', 'user');
         const addingBook = document.getElementById("addingBook");

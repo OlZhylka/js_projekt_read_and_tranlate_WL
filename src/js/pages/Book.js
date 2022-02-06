@@ -125,6 +125,8 @@ const BookPage = {
         anotherBooks.id ="another_books";
         anotherTitle.classList.add("another_title");
     },
+    // Синтаксис остаточных параметров функции (...rest) позволяет представлять
+    // неограниченное множество аргументов в виде массива.
     render: (className = "container", ...rest) => {
         return `
       <section class = "${className}">

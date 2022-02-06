@@ -161,6 +161,7 @@ function ModuleController() {
                         self.updateState();
                     }
                 })
+                //кнопка "назад"
                 const prevAudio = document.getElementById("prevAudio");
                 if (prevAudio) {
                     prevAudio.addEventListener("click", function () {
@@ -168,11 +169,12 @@ function ModuleController() {
                         myContentModel.setPlayer()
                     })
                 }
+                //кнопка "вперёд"
                 const nextAudio = document.getElementById("nextAudio");
                 if (nextAudio) {
                     nextAudio.addEventListener("click", function () {
                         myContentModel.setChapter(1);
-                        myContentModel.setPlayer()
+                        myContentModel.setPlayer();
                     })
                 }
                 let buttonAddToMe = document.getElementById("addingBook");

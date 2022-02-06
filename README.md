@@ -1,4 +1,4 @@
-# js_projek_prochitalochka_wolne_lekture
+# js_projekt_read_and_tranlate_WL
 
 A simple set, for a quick start. Try the new features of JavaScript with Babel.
 

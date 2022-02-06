@@ -11,15 +11,6 @@ function ContentView() {
         contentContainer = myModuleContainer.querySelector("#content");
     }
 
-
-    this.updateButtons = function (_currentPage) {
-        const menuLinks = menu.querySelectorAll(".mainmenu__link");
-
-        for (let link of menuLinks) {
-            _currentPage === link.getAttribute("href").slice(1) ? link.classList.add("active") : link.classList.remove("active");
-        }
-    }
-
     this.renderContent = function (_hashPageName) {
         let routeName = "default";
 
@@ -30,13 +21,13 @@ function ContentView() {
 
         window.document.title = routes[routeName].title;
         contentContainer.innerHTML = routes[routeName].render(`${routeName}-page`);
-        // this.updateButtons(routes[routeName].id);
+
     }
 
     this.insertContent = function (data) {
         const preloader = document.getElementById("preloader");
-        preloader.classList.add('hide');
         const catalogSection = document.getElementById("catalogSection");
+        preloader.classList.add('hide');
         routes['main'].insert(data, catalogSection);
 
     }
@@ -93,7 +84,7 @@ function ContentView() {
     this.restoreOption = function (crossForDeleteCard, vocabularySelect){
         let option = document.createElement('option');
         let wordId = crossForDeleteCard.parentNode.dataset.wordId
-        let word = crossForDeleteCard.parentNode.querySelector('#word').textContent
+        let word = crossForDeleteCard.parentNode.querySelector('#word').textContent;
         let translation = crossForDeleteCard.parentNode.querySelector('#translation').textContent
         option.innerText = `${word} - ${translation}`;
         option.value = wordId

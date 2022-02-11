@@ -40,6 +40,12 @@
     div {
       flex-basis: 30%;
     }
+    .mistake {
+      flex-basis: 100%;
+      margin: -10px 0 12px 120px;
+      font-size: 10px;
+      color: red;
+    }
 
     input {
       flex-basis: 65%;

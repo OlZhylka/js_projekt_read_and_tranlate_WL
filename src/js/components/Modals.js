@@ -25,14 +25,17 @@ const Modals = {
   <div id="modal_singUp" class="form hide">
     <div class="close"></div>
     <h3 >Регистрация</h3>
-    <div class="rowForm">
+    <form class="rowForm">
         <div>Your name: </div>
         <input type="userName" id="newUserName">
+        <div class="hide mistake" id="incorrectFillingName">Введите не менее одного символа</div>
         <div>Your E-mail: </div>
         <input type="email" id="newEmail">
+        <div class="hide mistake" id="incorrectFillingEmail">Некорректный адрес почты</div>
         <div>Password: </div>
         <input type="password" id="newPass">
-     </div>
+         <div class="hide mistake" id="incorrectFillingPassword" >Введите не менее шести символов</div>
+     </form>
          <button class="button__enter" id="OK">OK</button>
   
 </div>

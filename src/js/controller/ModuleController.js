@@ -99,10 +99,7 @@ function ModuleController() {
             let email = document.getElementById("newEmail").value;
             let password = document.getElementById("newPass").value;
             let userName = document.getElementById("newUserName").value;
-            if (email && password && userName) {
-                myModalModel.registrateUser(email, password, userName);
-            }
-            closeModalSignUp();
+            myModalModel.registrateUser(email, password, userName, modalSingUp);
         }
 
         function showHideMenu() {
@@ -131,6 +128,7 @@ function ModuleController() {
 
         // удаляем слушатель scroll на всех страницах
         document.removeEventListener("scroll", addBooksToView);
+
         function addBooksToView() {
             let end = document.getElementById('end')
 
@@ -204,7 +202,6 @@ function ModuleController() {
                 break;
             case "account":
                 let account = document.getElementById("account");
-
                 account.addEventListener("click", doSomethingInAccount);
 
             async function doSomethingInAccount(e) {
@@ -240,6 +237,7 @@ function ModuleController() {
                     myContentModel.restoreOption(crossForDeleteCard, vocabularySelect);
                 }
             }
+
                 break;
             case "listofwords":
                 const listOfLearnedWords = document.getElementById("listOfLearnedWords");

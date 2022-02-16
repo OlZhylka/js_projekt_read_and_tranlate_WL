@@ -1,4 +1,17 @@
 const FilterAuthors = {
+
+    insert: (data,newAuthors)=>{
+        let resultAuthors;
+        console.log(252525,data,newAuthors);
+        resultAuthors += `<option value="default" selected>Выберите автора</option>`
+        for (let i = 0; i < data.length; i++) {
+            resultAuthors += `
+             <option value="${data[i]}"> ${data[i]}</option>
+            `
+        }
+        newAuthors.innerHTML=resultAuthors;
+    },
+
     render: (data) => {
         let resultAuthors;
         data = data.authors;

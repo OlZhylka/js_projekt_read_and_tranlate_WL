@@ -10,18 +10,21 @@ function NavBarView() {
 
     this.renderFilter = function (data) {
         for (let item in filters) {
-            // if (filters.hasOwnProperty(item)) {
             navBar.innerHTML += filters[item].render(data);
-            // }
         }
     }
-
-    this.showHideMobileMenu = function (){
+    this.showHideMobileMenu = function () {
         const navbar = document.querySelector('nav');
         navbar.classList.toggle('show');
     }
-
+    this.changeSelectGenres = function (data) {
+        const selectGenres = document.getElementById("genres");
+        filters.genres.insert(data, selectGenres);
+    }
+    this.changeSelectAuthors = function (data) {
+        const selectAuthors = document.getElementById("authors");
+        filters.authors.insert(data, selectAuthors);
+    }
 }
-
 
 export default NavBarView;

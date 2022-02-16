@@ -9,6 +9,8 @@ function ModuleController() {
     this.init = function (root, modelContent, modelNavBar, modelHeader, modelModal) {
 
         const buttonFind = document.querySelector("button.button__find");
+        const  selectAuthors= document.getElementById("authors");
+        const  selectGenres= document.getElementById("genres");
         const buttonSignIn = document.getElementById("signIn");
         const buttonSignOut = document.getElementById("signOut");
         const modalSingIn = document.getElementById("modal_singIn");
@@ -28,6 +30,8 @@ function ModuleController() {
         myHeaderModel = modelHeader;
         myModalModel = modelModal;
 
+        selectAuthors.addEventListener("change", getGenresForTheAuthor);
+        selectGenres.addEventListener("change",getAuthorsForTheGenres);
         buttonFind.addEventListener("click", getListOfBooks);
         buttonSignIn.addEventListener("click", openModalSignIn);
         closeSingIn.addEventListener("click", closeModalSignIn);
@@ -39,6 +43,7 @@ function ModuleController() {
         buttonOK.addEventListener("click", registrateUser);
         accordion.addEventListener("click", showHideMenu);
 
+
         function addWord() {
             let word = document.querySelector("input[name=word]").value;
             let translate = document.querySelector("input[name=translate]").value;
@@ -46,7 +51,14 @@ function ModuleController() {
             document.querySelector("input[name=word]").value = '';
             document.querySelector("input[name=translate]").value = '';
         }
-
+        function getGenresForTheAuthor() {
+            let authorSingle = document.getElementById("authors").value;
+            myNawBarModel.getGenresForTheAuthor(authorSingle);
+        }
+        function getAuthorsForTheGenres() {
+            let genreSingle = document.getElementById("genres").value;
+            myNawBarModel.getAuthorsForTheGenre(genreSingle);
+        }
         function getListOfBooks() {
             let authorSingle = document.getElementById("authors").value;
             let genreSingle = document.getElementById("genres").value;

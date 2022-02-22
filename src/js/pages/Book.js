@@ -61,7 +61,7 @@ const BookPage = {
 
         bookCover.innerHTML = `<img  src = \'${data.cover_thumb}\'>`;
         bookCover.append(buttonRead);
-        buttonRead.innerHTML=`<a href='#read'>Читать</a>`;
+        buttonRead.innerHTML=`<a href='#read'>Читать on-line</a>`;
         buttonRead.id="buttonRead";
         buttonRead.dataset.slug =data.slug;
         buttonAddToMe.innerHTML = `<svg width="40" height="42" viewBox="0 0 40 42" fill="none" 

@@ -31,6 +31,7 @@ const Header = {
 
   <div class="title_project">Прочиталочка</div>
   <div class="info">Читай и пополняй словарный запас</div>
+  <div class="aboutApplication" id="aboutApliccation"><a href="#about">О приложении</a></div>
   <div id="userName" class="hide">Пользователь</div>
   <a href="#account"><button class="button__enter hide" id="enter">В&nbsp;кабинет</button></a>
   <button class="button__enter" id="signIn">Вход</button></>

@@ -14,6 +14,7 @@ function NavBarModel() {
                     booksAfterFilterChoose.push(books[key]);
                 }
             }
+            console.log(191919, booksAfterFilterChoose);
             books = booksAfterFilterChoose;
         } else {
             console.log(777)
@@ -128,6 +129,7 @@ let flagOfChangeInSelectGenres=1;
             }
             // убираю повторяющиеся значения
             genresInBooksOfAuthor = [...new Set(genresInBooksOfAuthor)];
+            genresInBooksOfAuthor.sort();
             let data = genresInBooksOfAuthor;
             myNavBarView.changeSelectGenres(data);
 
@@ -144,7 +146,9 @@ let flagOfChangeInSelectGenres=1;
             }
             // убираю повторяющиеся значения
             authorsInBooksOfGenre = [...new Set(authorsInBooksOfGenre)];
+            authorsInBooksOfGenre.sort();
             let data = authorsInBooksOfGenre;
+
             myNavBarView.changeSelectAuthors(data);
 
         }
